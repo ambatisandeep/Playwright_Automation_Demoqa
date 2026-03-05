@@ -1,0 +1,8 @@
+qa:
+  base_url: "https://qa.example.com"
+
+stage:
+  base_url: "https://stage.example.com"
+
+prod:
+  base_url: "https://example.com"

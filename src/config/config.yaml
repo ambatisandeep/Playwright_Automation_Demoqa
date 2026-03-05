@@ -1,0 +1,5 @@
+browser: chromium
+base_url: "https://example.com"
+timeout: 30000
+headless: false
+environment: qa
