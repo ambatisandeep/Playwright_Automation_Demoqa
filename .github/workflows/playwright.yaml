@@ -38,11 +38,7 @@ jobs:
       # Run tests (parallel + retry + allure)
       - name: Run tests
         run: |
-          pytest \
-            -n auto \
-            --reruns 2 \
-            --reruns-delay 2 \
-            --alluredir=allure-results
+          pytest --alluredir=allure-results
 
       # Upload raw artifacts
       - name: Upload screenshots + results
