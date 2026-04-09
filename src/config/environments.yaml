@@ -1,8 +1,17 @@
-qa:
-  base_url: "https://qa.example.com"
+# Environment-Specific Infrastructure
+name: "staging"
+base_url: "https://demoqa.com/"
 
-stage:
-  base_url: "https://stage.example.com"
+database:
+  host: "db-staging.internal"
+  port: 5432
+  db_name: "test_db_01"
 
-prod:
-  base_url: "https://example.com"
+api_endpoints:
+  auth: "/v1/auth"
+  users: "/v1/users"
+  orders: "/v1/orders"
+
+# Integrated third-party mock services
+mocks:
+  payment_gateway: "https://mock-stripe.local"

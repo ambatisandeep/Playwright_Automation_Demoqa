@@ -1,5 +1,18 @@
-browser: chromium
-base_url: "https://example.com"
-timeout: 30000
-headless: false
-environment: qa
+# Test Suite Execution Settings
+execution:
+  browser: "chrome"          # Options: chrome, firefox, edge
+  headless: true             # Run without a GUI window
+  parallel_workers: 4        # Number of tests to run at once
+  timeout: 15                # Default wait time in seconds
+
+# Reporting and Logging
+reporting:
+  save_screenshots: true     # Take screenshots on failure
+  log_level: "INFO"          # DEBUG, INFO, WARNING, ERROR
+  report_format: "html"      # Options: html, xml, json
+  output_dir: "./reports"
+
+# Test Data Settings
+test_data:
+  retry_count: 2             # Number of times to retry a failed test
+  load_mock_data: false      # Use fake data instead of DB
