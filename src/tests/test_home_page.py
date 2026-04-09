@@ -8,7 +8,7 @@ class TestHomePage:
         assert actual_title == "demosite"
 
     def test_home_page_category_titles(self,app):
-       expected_category_titles = ["Elements","forms","Alerts, Frame & Windows",
+       expected_category_titles = ["Elements","Forms","Alerts, Frame & Windows",
                                    "Widgets","Interactions","Book Store Application"]
 
        category_cards_elements = app.home_page.get_category_cards_details().all()
