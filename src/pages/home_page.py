@@ -1,7 +1,7 @@
 from playwright.sync_api import Page
 
-from src.config.config_reader import load_env_config
-from src.config.config_reader import load_config
+from config.config_reader import load_env_config
+from config.config_reader import load_config
 
 class HomePage:
 
@@ -18,7 +18,6 @@ class HomePage:
         except Exception as e:
             print(e)
 
-
     def get_home_page_title(self):
         try:
             return self.page.title()
@@ -26,10 +25,10 @@ class HomePage:
             print(e)
 
     def get_category_cards_details(self):
-        try:
-            return self.page.locator("div[class='category-cards']/a")
-        except Exception as e:
-            print(e)
+        self.navigate()
+        locator = self.page.locator(".category-cards h5")
+        locator.first.wait_for(state="visible")
+        return locator
 
 
 

@@ -1,4 +1,9 @@
 # Test Suite Execution Settings
+browser_setup:
+  browser: "chrome"
+  headless: False
+  maximize: "--start-maximized"
+
 execution:
   browser: "chrome"          # Options: chrome, firefox, edge
   headless: true             # Run without a GUI window
