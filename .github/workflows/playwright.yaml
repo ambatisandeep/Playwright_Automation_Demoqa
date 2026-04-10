@@ -1,0 +1,91 @@
+name: Playwright Advanced CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+
+  test:
+    name: Parallel Tests + Allure + Retries
+    runs-on: ubuntu-latest
+
+    container:
+      image: mcr.microsoft.com/playwright/python:v1.58.0-jammy
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Create folders
+      - name: Prepare folders
+        run: |
+          mkdir -p screenshots
+          mkdir -p allure-results
+
+      # Run tests (parallel + retry + allure)
+      - name: Run tests
+        run: |
+          pytest --alluredir=allure-results
+
+      # Upload raw artifacts
+      - name: Upload screenshots + results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-artifacts
+          path: |
+            screenshots/
+            allure-results/
+
+  report:
+    name: Generate + Deploy Allure Report
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download results
+        uses: actions/download-artifact@v4
+        with:
+          name: test-artifacts
+
+      # Install Allure CLI
+      - name: Install Allure
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y default-jre wget unzip
+          ALLURE_VERSION=2.27.0
+          wget https://github.com/allure-framework/allure2/releases/download/${ALLURE_VERSION}/allure-${ALLURE_VERSION}.zip
+          unzip allure-${ALLURE_VERSION}.zip
+          sudo mv allure-${ALLURE_VERSION} /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
+
+      # Generate report
+      - name: Generate report
+        run: |
+          allure generate allure-results -o allure-report --clean
+
+      # Setup Pages
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: allure-report
+
+      # Deploy
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
